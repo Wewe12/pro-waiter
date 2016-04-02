@@ -19,51 +19,80 @@ textures = {
               13 : pygame.image.load('textures/can.png'),
               14 : pygame.image.load('textures/tile1.png'),
               15 : pygame.image.load('textures/mop.png')
+              #16 : pygame.image.load('textures/')
            }
 
 #lista reprezentujaca mape
+# tilemap1 = [
+             # [2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2],
+             # [2,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,2],
+             # [2,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,2],
+             # [2,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,2],
+             # [2,0,0,0,0,1,1,1,1,1,1,0,0,0,0,0,2],
+             # [2,14,1,1,1,1,1,1,1,1,1,1,1,1,1,0,2],
+             # [2,1,1,1,1,1,1,0,0,0,0,1,1,1,1,1,2],
+             # [2,1,1,1,1,1,1,0,0,0,0,1,1,1,1,1,2],
+             # [2,1,1,1,1,1,1,1,1,1,1,1,1,1,15,1,2],
+             # [2,1,1,1,1,1,1,0,0,0,0,1,1,1,1,0,2],
+             # [2,1,1,0,0,1,1,0,0,0,0,1,1,1,1,0,2],
+             # [2,1,1,0,0,1,1,1,1,1,1,1,1,1,1,0,2],
+             # [2,1,1,0,0,0,0,0,0,0,0,1,1,1,1,1,2],
+             # [2,1,1,0,0,0,0,0,0,0,0,1,1,1,1,1,2],
+             # [2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2],
+             # [2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2],
+             # [2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2],
+           # ]
 tilemap1 = [
-             [2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2],
-             [2,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,2],
-             [2,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,2],
-             [2,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,2],
-             [2,0,0,0,0,1,1,1,1,1,1,0,0,0,0,0,2],
-             [2,14,1,1,1,1,1,1,1,1,1,1,1,1,1,0,2],
-             [2,1,1,1,1,1,1,0,0,0,0,1,1,1,1,1,2],
-             [2,1,1,1,1,1,1,0,0,0,0,1,1,1,1,1,2],
-             [2,1,1,1,1,1,1,1,1,1,1,1,1,1,15,1,2],
-             [2,1,1,1,1,1,1,0,0,0,0,1,1,1,1,0,2],
-             [2,1,1,0,0,1,1,0,0,0,0,1,1,1,1,0,2],
-             [2,1,1,0,0,1,1,1,1,1,1,1,1,1,1,0,2],
-             [2,1,1,0,0,0,0,0,0,0,0,1,1,1,1,1,2],
-             [2,1,1,0,0,0,0,0,0,0,0,1,1,1,1,1,2],
-             [2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2],
-             [2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2],
-             [2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2],
-           ]
-                   
+             [2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2],
+             [2,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,2],
+             [2,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,2],
+             [2,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,2],
+             [2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2],
+             [2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2],
+             [2,1,1,0,0,0,0,1,1,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2],
+             [2,1,1,0,0,0,0,1,1,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2],
+             [2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2],
+             [2,1,1,0,0,0,0,1,1,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2],
+             [2,1,1,0,0,0,0,1,1,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2],
+             [2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2],
+             [2,1,1,0,0,0,0,1,1,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2],
+             [2,1,1,0,0,0,0,1,1,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2],
+             [2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2],
+             [2,1,1,0,0,0,0,1,1,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2],
+             [2,1,1,0,0,0,0,1,1,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2],
+			 [2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2],
+			 [2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2],
+             [2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2],
+           ]                   
 
 def main():
 
         #deklaracja mapy,gracza i obiektow
-        map1 = Tilemap.Tilemap(textures,tilemap1,17,17)
-        player = Player.Player(3,7,'textures/roomba_down.png','textures/roomba_up.png','textures/roomba_left.png','textures/roomba_right.png')
-        A = Sprite.Sprite(7,6,'textures/tvset.png')
-        B = Sprite.Sprite(11,2,'textures/bookshelf1.png')
-        B1 = Sprite.Sprite(13,2,'textures/bookshelf1.png')
-        C = Sprite.Sprite(15,2,'textures/bookshelf2.png')
-        D = Sprite.Sprite(2,3,'textures/shelf1.png')
-        E = Sprite.Sprite(4,3,'textures/flower.png')
-        F = Sprite.Sprite(15,9,'textures/flower2.png')
-        F1 = Sprite.Sprite(15,10,'textures/flower2.png')
-        F2 = Sprite.Sprite(15,11,'textures/flower2.png')
-        G = Sprite.Sprite(3,9,'textures/sofa.png')
-        H = Sprite.Sprite(7,9,'textures/table.png')
-        I = Sprite.Sprite(1,4,'textures/kosz2.png')
+        map1 = Tilemap.Tilemap(textures,tilemap1,34,20)
+        player = Player.Player(2,4,'textures/kelDn.png','textures/kelUp.png','textures/roomba_left.png','textures/roomba_right.png',map1)
+        # A = Sprite.Sprite(7,6,'textures/tvset.png')
+        # B = Sprite.Sprite(11,2,'textures/bookshelf1.png')
+        # B1 = Sprite.Sprite(13,2,'textures/bookshelf1.png')
+        # C = Sprite.Sprite(15,2,'textures/bookshelf2.png')
+        # D = Sprite.Sprite(2,3,'textures/shelf1.png')
+        # E = Sprite.Sprite(4,3,'textures/flower.png')
+        # F = Sprite.Sprite(15,9,'textures/flower2.png')
+        # F1 = Sprite.Sprite(15,10,'textures/flower2.png')
+        # F2 = Sprite.Sprite(15,11,'textures/flower2.png')
+        # G = Sprite.Sprite(3,9,'textures/sofa.png')
+        A = Sprite.Sprite(3,6,'textures/table.png')
+        B = Sprite.Sprite(3,9,'textures/table.png')
+        C = Sprite.Sprite(3,12,'textures/table.png')
+        D = Sprite.Sprite(3,15,'textures/table.png')
+        E = Sprite.Sprite(9,6,'textures/table.png')
+        F = Sprite.Sprite(9,9,'textures/table.png')
+        G = Sprite.Sprite(9,12,'textures/table.png')
+        H = Sprite.Sprite(9,15,'textures/table.png')
+        # I = Sprite.Sprite(1,4,'textures/kosz2.png')
 
         #tablica obiektow
-        objectList = [ A,B,B1,C,D,E,F,F1,F2,G,H,I ]
-
+        # objectList = [ A,B,B1,C,D,E,F,F1,F2,G,H,I ]
+        objectList = [ A,B,C,D,E,F,G,H ]
         #czcionka
         # pygame.font.init()
         # font = pygame.font.Font('xxx.ttf', 18)

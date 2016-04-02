@@ -6,12 +6,13 @@ import Sprite
 
 class Player(Sprite.Sprite):
     #przeladowanie konstruktora obiektu
-    def __init__(self,x,y,texture_down,texture_up,texture_left,texture_right):
+    def __init__(self,x,y,texture_down,texture_up,texture_left,texture_right,tilemap):
         super(Player,self).__init__(x,y,texture_down)
         self.texture_down = texture_down
         self.texture_up = texture_up
         self.texture_left = texture_left
         self.texture_right = texture_right
+        self.tilemap = tilemap
 
         # #odpowiedzi odkurzacza
         # path_1 = "answers/move_verbs.txt"
@@ -49,22 +50,26 @@ class Player(Sprite.Sprite):
     def move(self,direction):
         #w lewo
         if direction == 'left':
-            self.x -= 1
+            if self.collision(self.tilemap, direction):
+                self.x -= 1
             #zmiana tekstury gracza
             self.image = self.texture_left
         # w prawo
         elif direction == 'right':
-            self.x += 1
+            if self.collision(self.tilemap, direction):
+                self.x += 1
             #zmiana tekstury gracza
             self.image = self.texture_right
         # w gore
         elif direction == 'up':
-            self.y -= 1
+            if self.collision(self.tilemap, direction):
+                self.y -= 1;
             #zmiana tekstury gracza
             self.image = self.texture_up
         #w dol
         elif direction == 'down':
-            self.y += 1
+            if self.collision(self.tilemap, direction):
+                self.y += 1
             #zmiana tekstury gracza
             self.image = self.texture_down
 
