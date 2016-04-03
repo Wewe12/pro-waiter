@@ -28,15 +28,17 @@ class Game():
                 #rysuj w okreslonym miejscu okreslony typ kafelka/obiektu
                 self.DISPLAYSURF.blit(self.tilemap.textures[self.tilemap.matrix[row][column]],(column*self.tilemap.tilesize,row*self.tilemap.tilesize))
 
-        #rysowanie gracza
-        icon = pygame.image.load(self.player.image).convert_alpha()
-        self.DISPLAYSURF.blit(icon,(self.player.x*self.tilemap.tilesize,self.player.y*self.tilemap.tilesize))
+
 
         #rysowanie wszystkich obiektow
         for i in range(len(self.objectList)):
             icon = pygame.image.load(self.objectList[i].image).convert_alpha()
             #rysuj w okreslonym miejscu okreslony obiekt z listy
             self.DISPLAYSURF.blit(icon,(self.objectList[i].x*self.tilemap.tilesize,self.objectList[i].y*self.tilemap.tilesize))
+        
+        #rysowanie gracza
+        icon = pygame.image.load(self.player.image).convert_alpha()
+        self.DISPLAYSURF.blit(icon,(self.player.x*self.tilemap.tilesize,self.player.y*self.tilemap.tilesize))
         
         #odswiezanie widoku
         pygame.display.update()
