@@ -76,6 +76,11 @@ class Player(Sprite.Sprite):
     #funkcja wykrywajaca ewentualne kolizje
     #uniemozliwia wyjscia postaci gracza poza mape i wejscia na kafelek zajety przez inny obiekt
     def collision(self,tilemap,direction):
+    
+    
+        #todo: uwzglednic rozne typy colliderów (nie tylko 0) np. check if >= 10
+    
+    
         #w lewo
         if direction == 'left':
             if self.x <= 1 or tilemap.matrix[self.y][self.x-1] == 0 or tilemap.matrix[self.y][self.x-1] == 2 :
@@ -88,7 +93,7 @@ class Player(Sprite.Sprite):
                 return False
         #w gore
         elif direction == 'up':
-            if self.y <= 4 or tilemap.matrix[self.y-1][self.x] == 0 or tilemap.matrix[self.y-1][self.x] == 2:
+            if self.y <= 3 or tilemap.matrix[self.y-1][self.x] == 0 or tilemap.matrix[self.y-1][self.x] == 2:
                 #docelowy kafelek zajety
                 return False
         #w dol

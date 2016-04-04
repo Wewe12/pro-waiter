@@ -9,7 +9,3 @@ class Tilemap:
         self.tilesize = 23				#rozmiar pojedynczego kafelka
         self.mapwidth = mapwidth			#szerokosc mapy
         self.mapheight = mapheight			#wysokosc mapy
-
-
-                    
-        

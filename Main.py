@@ -9,6 +9,7 @@ import Game
 #lista tekstur
 textures = {
               0 : pygame.image.load('textures/tile1.png'),
+              # 0 : pygame.image.load('textures/tile1.png'),
               1 : pygame.image.load('textures/tile1.png'),
               2 : pygame.image.load('textures/tile2.png'),
               3 : pygame.image.load('textures/wall_up2.png'),
@@ -107,6 +108,15 @@ def main():
         game = Game.Game(map1,player,objectList)
         while True:
                 game.display()
+                # player.move('up')
+                # game.display()
+                # player.move('right')
+                # game.display()
+                # player.move('down')
+                # game.display()
+                # player.move('left')
+                
+                
                 for event in pygame.event.get():
                         if event.type == QUIT:
                             exit()
