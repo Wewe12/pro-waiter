@@ -78,22 +78,22 @@ class Player(Sprite.Sprite):
     def collision(self,tilemap,direction):
         #w lewo
         if direction == 'left':
-            if self.x <= 1 or tilemap.matrix[self.y][self.x-1] == 0:
+            if self.x <= 1 or tilemap.matrix[self.y][self.x-1] == 0 or tilemap.matrix[self.y][self.x-1] == 2 :
                 #docelowy kafelek zajety
                 return False
         #w prawo
         elif direction == 'right':
-            if self.x >= tilemap.mapwidth - 2 or tilemap.matrix[self.y][self.x+1] == 0:
+            if self.x >= tilemap.mapwidth - 2 or tilemap.matrix[self.y][self.x+1] == 0 or tilemap.matrix[self.y][self.x+1] == 2:
                 #docelowy kafelek zajety
                 return False
         #w gore
         elif direction == 'up':
-            if self.y <= 4 or tilemap.matrix[self.y-1][self.x] == 0:
+            if self.y <= 4 or tilemap.matrix[self.y-1][self.x] == 0 or tilemap.matrix[self.y-1][self.x] == 2:
                 #docelowy kafelek zajety
                 return False
         #w dol
         elif direction == 'down':
-            if self.y >= tilemap.mapheight - 2 or tilemap.matrix[self.y+1][self.x] == 0:
+            if self.y >= tilemap.mapheight - 3 or tilemap.matrix[self.y+1][self.x] == 0 or tilemap.matrix[self.y+1][self.x] == 2:
                 #docelowy kafelek zajety
                 return False
 
