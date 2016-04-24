@@ -78,7 +78,7 @@ class Player(Sprite.Sprite):
     def collision(self,tilemap,direction):
     
     
-        #todo: uwzglednic rozne typy colliderów (nie tylko 0) np. check if >= 10
+        #todo: uwzglednic rozne typy colliderow (nie tylko 0) np. check if >= 10
     
     
         #w lewo

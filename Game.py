@@ -19,7 +19,21 @@ class Game():
         #wyswietl okno gry
         self.DISPLAYSURF = pygame.display.set_mode((tilemap.mapwidth*tilemap.tilesize + 400,tilemap.mapheight*tilemap.tilesize))
       
-           
+    def addObject(this, sprite, width, height):
+        this.objectList.append(sprite)
+        for i in range(sprite.y - 1, sprite.y - 1 + height):
+            for j in range (sprite.x, sprite.x + width):
+                this.tilemap.matrix[i][j] = 0
+    
+    def addObjectOnWall(this, sprite):
+        this.objectList.append(sprite)
+        
+    def deleteObject(this, sprite):
+        this.objectList.remove(sprite)
+        # for i in range(len(this.objectList)):
+            # if this.objectList[i] == sprite:
+                # this.objectList[i].remove
+    
     #wyswietlanie i odswiezanie okna gry  
     def display(self):
         #rysowanie mapy
