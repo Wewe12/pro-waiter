@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import fuzzy.storage.fcl.Reader
 
 class FuzzyCalc:
@@ -16,12 +18,12 @@ class FuzzyCalc:
  
     # if you need only one calculation you do not need the while
     # set input values
-    my_input["oczekiwanie"] = float(raw_input("oczekiwanie: "))
-    my_input["jedzenie"] = float(raw_input("jedzenie: "))
-    my_input["droga"] = float(raw_input("droga: "))
+    my_input["oczekiwanie"] = float(raw_input("oczekiwanie od zamówienia (0-10) : "))
+    my_input["jedzenie"] = float(raw_input("oczekiwanie od przygotowania (0-10) : "))
+    my_input["droga"] = float(raw_input("droga (0-10) : "))
     
     # calculate
     system.calculate(my_input, my_output)
  
     # now use outputs
-    print "obsluga: " + str( my_output["obsluga"])
+    print "\n obsługa : " + str( my_output["obsluga"])

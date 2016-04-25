@@ -11,27 +11,27 @@ VAR_OUTPUT
 END_VAR
 
 FUZZIFY oczekiwanie			
-	TERM krotkie := (0,1) (2,1) (4, 0) ; 
-	TERM srednie := (3, 0) (4,1) (7,1) (8,0);
-	TERM dlugie := (7, 0) (8, 1) (10,1);
+	TERM krotkie := (0,0) (0.5,1) (2,1) (4,0) ; 
+	TERM srednie := (3,0) (4,1) (7,1) (8,0);
+	TERM dlugie := (7,0) (8,1) (9.5,1) (10,0);
 END_FUZZIFY
 
 FUZZIFY jedzenie			
-	TERM brak := (0,1) (1,1) (3,0) ;
+	TERM brak := (0,0) (0.5,1) (1,1) (3,0) ;
 	TERM gorace := (1,0) (2,1) (7,1) (8,0);
-	TERM cieple := (7,0) (8,1) (10,1);
+	TERM cieple := (7,0) (8,1) (9.5,1) (10,0);
 END_FUZZIFY
 
 FUZZIFY droga			
-	TERM krotka := (0,1) (2,1) (4,0) ;
+	TERM krotka := (0,0) (0.5,1) (2,1) (4,0) ;
 	TERM srednia := (2,0) (4,1) (7,1) (9,0);
-	TERM dluga := (7,0) (9,1) (10,1);
+	TERM dluga := (7,0) (9,1) (9.5,1) (10,0);
 END_FUZZIFY
 
 DEFUZZIFY obsluga			
-	TERM teraz := (0,1) (2,1) (4,0);
+	TERM teraz := (0,0) (0.5,1) (2,1) (4,0);
 	TERM zaraz := (2,0) (4,1) (6,1) (8,0);
-	TERM pozniej := (6,0) (8,1) (10,0);
+	TERM pozniej := (6,0) (8,1) (9.5,1) (10,0);
 	ACCU: MAX;
 	METHOD : COG;				
 END_DEFUZZIFY
