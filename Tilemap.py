@@ -2,10 +2,12 @@ import random
 from random import shuffle
 
 class Tilemap:
-    #konstruktor mapy
+
+    # map's constructor
+
     def __init__(self,textures,matrix,mapwidth,mapheight):
-        self.textures = textures			#lista tekstur
-        self.matrix = matrix				#lista reprezentujaca mape
-        self.tilesize = 23				#rozmiar pojedynczego kafelka
-        self.mapwidth = mapwidth			#szerokosc mapy
-        self.mapheight = mapheight			#wysokosc mapy
+        self.textures = textures  # list of textures
+        self.matrix = matrix  # list which represents map
+        self.tilesize = 23  # singe tile's size
+        self.mapwidth = mapwidth  # map's width
+        self.mapheight = mapheight  # map's height
