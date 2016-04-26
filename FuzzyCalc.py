@@ -4,7 +4,7 @@ import fuzzy.storage.fcl.Reader
 
 class FuzzyCalc:
 
-    system = fuzzy.storage.fcl.Reader.Reader().load_from_file("./obsluga.fcl")
+    system = fuzzy.storage.fcl.Reader.Reader().load_from_file("./fuzzycalc.fcl")
  
     # preallocate input and output values
     my_input = {

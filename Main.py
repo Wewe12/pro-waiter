@@ -6,65 +6,20 @@ import Player
 import Tilemap
 import Game
 
-#lista tekstur
+# list which represents textures
+
 textures = {
               0 : pygame.image.load('textures/tile1.png'),
-              # 0 : pygame.image.load('textures/tile1.png'),
               1 : pygame.image.load('textures/tile1.png'),
               2 : pygame.image.load('textures/tile2.png'),
               3 : pygame.image.load('textures/wall_up2.png'),
               4 : pygame.image.load('textures/wall_up.png'),
               5 : pygame.image.load('textures/wall_low.png'),
-              11 : pygame.image.load('textures/stain.png'),
-              12 : pygame.image.load('textures/dirt.png'),
-              13 : pygame.image.load('textures/can.png'),
-              14 : pygame.image.load('textures/tile1.png'),
-              15 : pygame.image.load('textures/mop.png')
-              #16 : pygame.image.load('textures/')
+
            }
 
-#lista reprezentujaca mape
-# tilemap1 = [
-             # [2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2],
-             # [2,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,2],
-             # [2,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,2],
-             # [2,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,2],
-             # [2,0,0,0,0,1,1,1,1,1,1,0,0,0,0,0,2],
-             # [2,14,1,1,1,1,1,1,1,1,1,1,1,1,1,0,2],
-             # [2,1,1,1,1,1,1,0,0,0,0,1,1,1,1,1,2],
-             # [2,1,1,1,1,1,1,0,0,0,0,1,1,1,1,1,2],
-             # [2,1,1,1,1,1,1,1,1,1,1,1,1,1,15,1,2],
-             # [2,1,1,1,1,1,1,0,0,0,0,1,1,1,1,0,2],
-             # [2,1,1,0,0,1,1,0,0,0,0,1,1,1,1,0,2],
-             # [2,1,1,0,0,1,1,1,1,1,1,1,1,1,1,0,2],
-             # [2,1,1,0,0,0,0,0,0,0,0,1,1,1,1,1,2],
-             # [2,1,1,0,0,0,0,0,0,0,0,1,1,1,1,1,2],
-             # [2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2],
-             # [2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2],
-             # [2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2],
-           # ]
-# tilemap1 = [
-             # [2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2],
-             # [2,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,2],
-             # [2,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,2],
-             # [2,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,2],
-             # [2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2],
-             # [2,1,1,0,0,0,0,1,1,0,0,0,0,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2],
-             # [2,1,1,0,0,0,0,1,1,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2],
-             # [2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2],
-             # [2,1,1,0,0,0,0,1,1,0,0,0,0,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2],
-             # [2,1,1,0,0,0,0,1,1,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2],
-             # [2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2],
-             # [2,1,1,0,0,0,0,1,1,0,0,0,0,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2],
-             # [2,1,1,0,0,0,0,1,1,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2],
-             # [2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2],
-             # [2,1,1,0,0,0,0,1,1,0,0,0,0,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2],
-             # [2,1,1,0,0,0,0,1,1,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2],
-             # [2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2],
-			 # [2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2],
-			 # [2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2],
-             # [2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2],
-           # ]           
+
+# list which represents map
 
 tilemap1 = [
              [2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2],
@@ -84,79 +39,72 @@ tilemap1 = [
              [2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2],
              [2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2],
              [2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2],
-			 [2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2],
-			 [2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2],
+	     [2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2],
+	     [2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2],
              [2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2],
            ]      
 
-           
-
 def main():
 
-        #deklaracja mapy,gracza i obiektow
-        map1 = Tilemap.Tilemap(textures,tilemap1,34,20)
-        player = Player.Player(2,4,'textures/kelDn.png','textures/kelUp.png','textures/kelLt.png','textures/kelRt.png',map1)
-        # A = Sprite.Sprite(7,6,'textures/tvset.png')
-        # B = Sprite.Sprite(11,2,'textures/bookshelf1.png')
-        # B1 = Sprite.Sprite(13,2,'textures/bookshelf1.png')
-        # C = Sprite.Sprite(15,2,'textures/bookshelf2.png')
-        # D = Sprite.Sprite(2,3,'textures/shelf1.png')
-        # E = Sprite.Sprite(4,3,'textures/flower.png')
-        # F = Sprite.Sprite(15,9,'textures/flower2.png')
-        # F1 = Sprite.Sprite(15,10,'textures/flower2.png')
-        # F2 = Sprite.Sprite(15,11,'textures/flower2.png')
-        # G = Sprite.Sprite(3,9,'textures/sofa.png')
-        
-        #(x, y) v >
-        
-        A = Sprite.Sprite(3,6,'textures/tableSmall.png')
-        C = Sprite.Sprite(3,12,'textures/tableSmall.png')
-        E = Sprite.Sprite(12,6,'textures/tableSmall.png')
-        G = Sprite.Sprite(12,12,'textures/tableSmall.png')
-        
-        #KWIATKI
-        I = Sprite.Sprite(18,6,'textures/flower2.png')
-        J = Sprite.Sprite(18,9,'textures/flower2.png')
-        K = Sprite.Sprite(18,12,'textures/flower2.png')
-        L = Sprite.Sprite(18,15,'textures/flower2.png')
-        
-        
-        
-        # I = Sprite.Sprite(1,4,'textures/kosz2.png')
+        # declaration of map, player and objects
 
-        #tablica obiektow
-        # objectList = [ A,B,B1,C,D,E,F,F1,F2,G,H,I ]
+        map1 = Tilemap.Tilemap(textures,tilemap1,34,20)
+
+        player = Player.Player(2,4,'textures/kelDn.png','textures/kelUp.png','textures/kelLt.png','textures/kelRt.png',map1)
         
-        #objectList = [ A,C,E,G,I,J,K,L ]
+        # tables
+
+        tbl1 = [Sprite.Sprite(3,6,'textures/tableSmall.png'),2,2]
+        tbl2 = [Sprite.Sprite(3,12,'textures/tableSmall.png'),2,2]
+        tbl3 = [Sprite.Sprite(12,6,'textures/tableSmall.png'),2,2]
+        tbl4 = [Sprite.Sprite(12,12,'textures/tableSmall.png'),2,2]
         
-        objectList = []
+        # plants
+
+        pl1 = [Sprite.Sprite(18,6,'textures/flower2.png'),1,1]
+        pl2 = [Sprite.Sprite(18,9,'textures/flower2.png'),1,1]
+        pl3 = [Sprite.Sprite(18,12,'textures/flower2.png'),1,1]
+        pl4 = [Sprite.Sprite(18,15,'textures/flower2.png'),1,1]
+
+        # chairs
+
+        ch1 = [Sprite.Sprite(2,6,'textures/chairRt.png'),1,1]    
+        ch2 = [Sprite.Sprite(2,12,'textures/chairRt.png'),1,1]
         
+        # door
         
-        #Drzwi
-        #objectList.append(Sprite.Sprite(15,2,'textures/door.png'))
+        door = Sprite.Sprite(15,2,'textures/door.png')
         
-        #czcionka
-        # pygame.font.init()
-        # font = pygame.font.Font('xxx.ttf', 18)
+        objectList = [tbl1,tbl2,tbl3,tbl4,pl1,pl2,pl3,pl4,ch1,ch2]
         
-        #rozpocznij gre
-        game = Game.Game(map1,player,objectList)
+        # some text-window display settings
+
+        # font
+
+        pygame.font.init()
+        font = pygame.font.Font(None, 30)
         
-        ch1 = Sprite.Sprite(2,6,'textures/chairRt.png')
+        # game clock
+
+        clock = pygame.time.Clock()
+        frame_rate = 60
+        frame_count = 0
+
+        # let the game begin
+
+        game = Game.Game(map1,player)
         
+        # add objects to game
+
+        for element in objectList:
+            game.addObject(element[0],element[1],element[2])
         
-        game.addObject(A, 2, 2)
-        game.addObject(C, 2, 2)
-        game.addObject(E, 2, 2)
-        game.addObject(G, 2, 2)
-        game.addObject(I, 1, 1)
-        game.addObject(J, 1, 1)
-        game.addObject(K, 1, 1)
-        game.addObject(L, 1, 1)
-        game.addObject(ch1, 1, 2)
-        game.addObjectOnWall(Sprite.Sprite(15,2,'textures/door.png'))
+        game.addObjectOnWall(door)
+
+        # main game loop
+
         while True:
-                game.display()
+                # event handling
                 for event in pygame.event.get():
                         if event.type == QUIT:
                             exit()
@@ -173,6 +121,32 @@ def main():
                                         player.move('right')
                                 if event.key == K_LEFT:
                                         player.move('left')
+                
+                # time counting
+
+                # calculate total seconds
+                total_seconds = frame_count // frame_rate
+
+                # divide by 60 to get total minutes
+                minutes = total_seconds // 60
+ 
+                # use modulus (remainder) to get seconds
+                seconds = total_seconds % 60
+
+                # use python string formatting to format in leading zeros
+                output_string = "{0:02}:{1:02}".format(minutes, seconds)
+ 
+                # prepare to blit to the screen
+                text = font.render(output_string, True, (255,255,255))
+
+                # update the screen with what we've drawn
+                game.display(text)
+
+                # take the next frame
+                frame_count += 1
+
+                # limit frames per second
+                clock.tick(60)
 
 
                 
