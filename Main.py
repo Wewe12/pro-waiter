@@ -5,6 +5,7 @@ import Sprite
 import Player
 import Tilemap
 import Game
+import a_star_path_finding
 
 #lista tekstur
 textures = {
@@ -144,7 +145,11 @@ def main():
         
         ch1 = Sprite.Sprite(2,6,'textures/chairRt.png')
         
-        
+        algorithm = a_star_path_finding.AStar()
+        list = [(0,2),(1,1)]
+        algorithm.init_grid(3,3,list,(0,0),(2,2))
+        print algorithm.solve()
+
         game.addObject(A, 2, 2)
         game.addObject(C, 2, 2)
         game.addObject(E, 2, 2)
