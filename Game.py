@@ -82,6 +82,12 @@ class Game():
         # declaration of kitchen activities controller
         self.kitchen = Kitchen.Kitchen(len(self.customers))
 
+        # true if waiter should go to the kitchen
+        self.kitchenOpen = False
+        # number of customer for whom the waiter is going to the kitchen
+        # or already took a meal/drink from it
+        self.recievedOrder = 0
+
         # calling function that supports collision preventing
         # depends on object's size
 
@@ -158,6 +164,27 @@ class Game():
             else:
                 return 0
 
+    # checking if there's something for chosen customer in the kitchen
+    # saving it as a recievedOrder if so
+    def checkOrder(self,currentTable,time):
+        state = self.customers[currentTable - 1].getState()
+        if (state == 1 or state == 2):
+            if (self.kitchen.getMealsReadiness(time)[currentTable - 1] > 0):
+                ready = True
+            else:
+                ready = False
+            if (state == 2 and ready == False):
+                pass
+            elif (state == 2):
+                kitchenLog = "Zabrano posilek dla klienta " + str(currentTable) + "."
+            elif (ready):
+                kitchenLog = "Zabrano posilek i napoj dla klienta " + str(currentTable) + "."
+            else:
+                kitchenLog = "Zabrano napoj dla klienta " + str(currentTable) + "."
+            self.hint = self.font.render("Idz do kuchni.",True,(255,255,255))
+            self.recievedOrder = currentTable
+            return kitchenLog
+            
 
     # shows and updates game window
  
@@ -249,18 +276,35 @@ class Game():
                     self.player.move('left')
                 # generating hints for player (where to go)
                 if event.key == K_SPACE:
-                    self.currentTable = self.getDecision()
-                    if (self.currentTable > 0):
-                        self.hint = self.font.render("Idz do stolika nr " + str(self.currentTable) + ".", True, (255,255,255))
-                    else:
-                        self.hint = self.font.render("Poczekaj na przygotowanie posilku.", True, (255,255,255))
+                    if (self.kitchenOpen == False):  # if the kitchen is open, go to the damn kitchen
+                        if (self.recievedOrder > 0):  # if you took something from the kitchen, you already have a target
+                            self.currentTable = self.recievedOrder
+                            self.hint = self.font.render("Idz do stolika nr " + str(self.currentTable) + ".", True, (255,255,255))
+                        else:
+                            self.currentTable = self.getDecision()  # if you have no target, choose one
+                            if (self.currentTable > 0):  # 0 if everyone is waiting for a meal and meal isn't ready
+                                kitchenLog = self.checkOrder(self.currentTable,time)  # maybe there's something to bring
+                                if (kitchenLog != None):  # if so, go to the kitchen
+                                    self.kitchenOpen = True
+                                    self.kitchenLog = kitchenLog
+                                else:  # if not, just go get the order placed
+                                    self.hint = self.font.render("Idz do stolika nr " + str(self.currentTable) + ".", True, (255,255,255))
+                            else:  # nowhere to go
+                                self.hint = self.font.render("Poczekaj na przygotowanie posilku.", True, (255,255,255))
                 # table serving
                 if event.key == K_RETURN:
-                    message = self.customers[self.currentTable - 1].customerAction(time, self.kitchen, self.player, self.colors)
-                    if (message != "action impossible"):
-                        if (self.colors.getServed() == len(self.customers)):  # whoa, mission accomplished
-                            message = "Wszyscy klienci obsluzeni!"
-                            self.hintDisplay = False
-                        else:  # you're standing on the wrong tile or customer already received the order
+                    if (self.kitchenOpen):  # no interactions with customers right now
+                        if ((self.player.x, self.player.y) == (16,3)):  # you must reach the kitchen door
+                            message = self.kitchenLog
+                            self.message = self.font.render(message,True,(255,255,255))
+                            self.hint = self.font.render("Nacisnij spacje, aby otrzymac wskazowke.",True,(255,255,255))
+                            self.kitchenOpen = False
+                    else:  # interactions with customers
+                        message = self.customers[self.currentTable - 1].customerAction(time, self.kitchen, self.player, self.colors)
+                        if (message != "action impossible"):
+                            if (self.colors.getServed() == len(self.customers)):  # whoa, mission accomplished
+                                message = "Wszyscy klienci obsluzeni!"
+                                self.hintDisplay = False
                             self.hint = self.font.render("Nacisnij spacje, aby otrzymac wskazowke.", True, (255,255,255))
-                        self.message = self.font.render(message, True, (255,255,255))
+                            self.message = self.font.render(message, True, (255,255,255))
+                            self.recievedOrder = 0
