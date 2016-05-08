@@ -5,9 +5,9 @@ class Kitchen():
     def __init__(self, number):
         self.number = number  # number of customers
         self.customerStates = [0 for i in range(number)]  # list that represents each customer's state
-        self.orderTimes = [-1 for i in range(number)]  # list that represents each customer's time of order placing
+        self.orderTimes = [0 for i in range(number)]  # list that represents each customer's time of order placing
         self.orderFinishTimes = []  # list which tells when each already ordered meal will be ready
-        self.waitingMeals = [-1 for i in range(number)]  # list which tells what time the meal was finished
+        self.waitingMeals = [0 for i in range(number)]  # list which tells what time the meal was finished
 
     # update customer's state on the list
     def stateUpdate(self, customer):
@@ -27,8 +27,8 @@ class Kitchen():
             self.orderFinishTimes.append((finishTime,index))
             self.orderFinishTimes = sorted(self.orderFinishTimes, key=lambda x: x[0])
         else:
-            self.orderTimes[index] = -1
-            self.waitingMeals[index] = -1
+            self.orderTimes[index] = 0
+            self.waitingMeals[index] = 0
 
     # sends information of meal readiness, saves current time
     def makeMealReady(self,customer,time):

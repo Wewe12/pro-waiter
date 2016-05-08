@@ -8,22 +8,22 @@ class FuzzyCalc:
  
     # preallocate input and output values
     my_input = {
-        "oczekiwanie" : 0.0,
-        "jedzenie" : 0.0,
-        "droga" : 0.0
+        "waitinge" : 0.0,
+        "meal" : 0.0,
+        "distance" : 0.0
         }
     my_output = {
-        "obsluga" : 0.0
+        "service" : 0.0
         }
  
     # if you need only one calculation you do not need the while
     # set input values
-    my_input["oczekiwanie"] = float(raw_input("oczekiwanie od zamówienia (0-10) : "))
-    my_input["jedzenie"] = float(raw_input("oczekiwanie od przygotowania (0-10) : "))
-    my_input["droga"] = float(raw_input("droga (0-10) : "))
+    my_input["waiting"] = float(raw_input("oczekiwanie od zamówienia (0-45) : "))
+    my_input["meal"] = float(raw_input("oczekiwanie od przygotowania (0-30) : "))
+    my_input["distance"] = float(raw_input("droga (0-51) : "))
     
     # calculate
     system.calculate(my_input, my_output)
  
     # now use outputs
-    print "\n obsługa : " + str( my_output["obsluga"])
+    print "\n obsługa : " + str( my_output["service"])

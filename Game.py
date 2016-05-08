@@ -9,6 +9,8 @@ import Customer
 import Kitchen
 import Number
 import Colors
+import Distance
+import Classification
 
 class Game():
 
@@ -117,6 +119,10 @@ class Game():
         # hints for user enable
         self.hintDisplay = True
 
+        self.distance = Distance.Distance(self.player)
+
+        self.currentTable = None
+
         # let the game begin
         pygame.init()
 
@@ -174,7 +180,7 @@ class Game():
             else:
                 ready = False
             if (state == 2 and ready == False):
-                pass
+                kitchenLog = None
             elif (state == 2):
                 kitchenLog = "Zabrano posilek dla klienta " + str(currentTable) + "."
             elif (ready):
@@ -184,7 +190,47 @@ class Game():
             self.hint = self.font.render("Idz do kuchni.",True,(255,255,255))
             self.recievedOrder = currentTable
             return kitchenLog
-            
+
+    def viaKitchen(self, table, time):
+        state = self.customers[table - 1].getState()
+        if (state == 1 or state == 2):
+            if (self.kitchen.getMealsReadiness(time)[table - 1] > 0):
+                return True
+            elif (state == 2):
+                return False
+            else:
+                return True
+        else:
+            return False
+
+    def getDistances(self, time):
+        distances = []
+        for i in range(len(self.customers)):
+            viakitchen = self.viaKitchen(i+1, time)
+            dist = self.distance.getDistance(self.customers[i], viakitchen)
+            distances.append(dist)
+        return distances
+
+    def getCurrentData(self, time):
+        data = []
+        distance = self.getDistances(time)
+        waiting = []
+        meal = self.kitchen.getMealsReadiness(time)
+        for i in range(len(self.customers)):
+            state = self.customers[i].getState()
+            if (state == 0):
+                waiting.append(time)
+                data.append((waiting[i],meal[i],distance[i]))
+            elif (state == 1):
+                waiting.append(time - self.customers[i].getOrderTime())
+                data.append((waiting[i],meal[i],distance[i]))
+            elif (state == 2 and meal[i] > 0):
+                waiting.append(0)
+                data.append((waiting[i],meal[i],distance[i]))
+            else:
+                waiting.append(0)
+                data.append((0,0,51))
+        return data
 
     # shows and updates game window
  
@@ -274,6 +320,12 @@ class Game():
                     self.player.move('right')
                 if event.key == K_LEFT:
                     self.player.move('left')
+                if event.key == K_KP_ENTER:
+                    self.classification = Classification.Classification("trainingset")
+                    print self.classification.classify(self.getCurrentData(time))
+                    # klawisz do testowania rzeczy
+                if event.key == K_KP1:
+                    print self.classification.classify(self.getCurrentData(time))
                 # generating hints for player (where to go)
                 if event.key == K_SPACE:
                     if (self.kitchenOpen == False):  # if the kitchen is open, go to the damn kitchen
@@ -293,18 +345,19 @@ class Game():
                                 self.hint = self.font.render("Poczekaj na przygotowanie posilku.", True, (255,255,255))
                 # table serving
                 if event.key == K_RETURN:
-                    if (self.kitchenOpen):  # no interactions with customers right now
-                        if ((self.player.x, self.player.y) == (16,3)):  # you must reach the kitchen door
-                            message = self.kitchenLog
-                            self.message = self.font.render(message,True,(255,255,255))
-                            self.hint = self.font.render("Nacisnij spacje, aby otrzymac wskazowke.",True,(255,255,255))
-                            self.kitchenOpen = False
-                    else:  # interactions with customers
-                        message = self.customers[self.currentTable - 1].customerAction(time, self.kitchen, self.player, self.colors)
-                        if (message != "action impossible"):
-                            if (self.colors.getServed() == len(self.customers)):  # whoa, mission accomplished
-                                message = "Wszyscy klienci obsluzeni!"
-                                self.hintDisplay = False
-                            self.hint = self.font.render("Nacisnij spacje, aby otrzymac wskazowke.", True, (255,255,255))
-                            self.message = self.font.render(message, True, (255,255,255))
-                            self.recievedOrder = 0
+                    if (self.currentTable != None):
+                        if (self.kitchenOpen):  # no interactions with customers right now
+                            if ((self.player.x, self.player.y) == (16,3)):  # you must reach the kitchen door
+                                message = self.kitchenLog
+                                self.message = self.font.render(message,True,(255,255,255))
+                                self.hint = self.font.render("Nacisnij spacje, aby otrzymac wskazowke.",True,(255,255,255))
+                                self.kitchenOpen = False
+                        else:  # interactions with customers
+                            message = self.customers[self.currentTable - 1].customerAction(time, self.kitchen, self.player, self.colors)
+                            if (message != "action impossible"):
+                                if (self.colors.getServed() == len(self.customers)):  # whoa, mission accomplished
+                                    message = "Wszyscy klienci obsluzeni!"
+                                    self.hintDisplay = False
+                                self.hint = self.font.render("Nacisnij spacje, aby otrzymac wskazowke.", True, (255,255,255))
+                                self.message = self.font.render(message, True, (255,255,255))
+                                self.recievedOrder = 0
