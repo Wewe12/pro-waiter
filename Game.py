@@ -115,13 +115,21 @@ class Game():
         # initial text
         self.message = self.font.render("Klienci czekaja na obsluge.", True, (255,255,255))
         self.hint = self.font.render("Nacisnij spacje, aby otrzymac wskazowke.", True, (255,255,255))
+        
+        # time when program will be closed automatically
+        self.quitTime = -1
 
         # hints for user enable
         self.hintDisplay = True
 
+        # distance controller
         self.distance = Distance.Distance(self.player)
 
+        # last choice of table to go
         self.currentTable = None
+
+        # decision tree
+        self.classification = Classification.Classification("trainingset")
 
         # let the game begin
         pygame.init()
@@ -137,8 +145,11 @@ class Game():
             for j in range (sprite.x, sprite.x + width):
                 self.tilemap.matrix[i][j] = 0
 
-    # checking if it's the time to finish meal preparing
+    # checking if it's the time to finish meal preparing or close the program
     def timeEvent(self,time,kitchen):
+        if (time == self.quitTime):
+            exit()
+            sys.exit()
         timeList = kitchen.orderFinishTimes
         if (len(timeList) > 0):
             if (timeList[0][0] == time):
@@ -147,29 +158,35 @@ class Game():
                 return message
 
     # choosing the table to serve
-    # TEMPORARY!!!
-    # improving in progress
 
-    def getDecision(self):
-        # if some meal is ready, go and serve it
-        ready = self.kitchen.anyMealReady()
-        if (ready > 0):
-            return ready
+    def getDecision(self,time):
+        data = self.getCurrentData(time)
+        decisions = self.classification.classify(data)  # decisions made by the tree
+        # print decisions
+        permissible = []
+        for i in range(len(data)):
+            if (data[i] == 'True'):
+                permissible.append(i)
+        # if tree hasn't classified any table, allow each customer
+        # except whose order is already placed, drink served (if
+        # orderer), but meal not ready
+        if (len(permissible) == 0):
+            for i in range(len(data)):
+                if (data[i][0] > 0 or data[i][1] > 0):
+                    permissible.append(i)
+        if (len(permissible) == 0):
+            return 0
+        # go to the nearest permissible table
         else:
-            # if there's no ready meal, serve random customer who
-            # ordered a drink or haven't placed the order yet
-            remaining = []
-            for i in range(len(self.kitchen.customerStates)):
-                if (self.kitchen.customerStates[i] == 0 or self.kitchen.customerStates[i] == 1):
-                    remaining.append(i+1)
-            if (len(remaining) > 0):
-                index = random.randint(0, len(remaining) - 1)
-                return remaining[index]
-            # if everybody has placed the order and received ordered
-            # drinks, do nothing but wait for meals
-            else:
-                return 0
-
+            mindist = 51
+            for element in permissible:
+                dist = data[element][2]
+                if (dist < mindist):
+                    mindist = dist
+                    choice = element
+            return choice + 1
+            
+            
     # checking if there's something for chosen customer in the kitchen
     # saving it as a recievedOrder if so
     def checkOrder(self,currentTable,time):
@@ -185,12 +202,15 @@ class Game():
                 kitchenLog = "Zabrano posilek dla klienta " + str(currentTable) + "."
             elif (ready):
                 kitchenLog = "Zabrano posilek i napoj dla klienta " + str(currentTable) + "."
+                self.customers[currentTable - 1].enableDoubleAction()
             else:
                 kitchenLog = "Zabrano napoj dla klienta " + str(currentTable) + "."
             self.hint = self.font.render("Idz do kuchni.",True,(255,255,255))
             self.recievedOrder = currentTable
             return kitchenLog
 
+    # checking if waiter should go to the kitchen before the table
+    # necessary to distance calculating
     def viaKitchen(self, table, time):
         state = self.customers[table - 1].getState()
         if (state == 1 or state == 2):
@@ -203,6 +223,8 @@ class Game():
         else:
             return False
 
+    # returns list of distances from player to each table, including
+    # going to the kitchen if necessary
     def getDistances(self, time):
         distances = []
         for i in range(len(self.customers)):
@@ -211,6 +233,8 @@ class Game():
             distances.append(dist)
         return distances
 
+    # returns list of tuples (waiting, meal, distance) to classify
+    # by decision tree
     def getCurrentData(self, time):
         data = []
         distance = self.getDistances(time)
@@ -320,9 +344,7 @@ class Game():
                     self.player.move('right')
                 if event.key == K_LEFT:
                     self.player.move('left')
-                if event.key == K_KP_ENTER:
-                    self.classification = Classification.Classification("trainingset")
-                    print self.classification.classify(self.getCurrentData(time))
+                # if event.key == K_KP_ENTER:
                     # klawisz do testowania rzeczy
                 if event.key == K_KP1:
                     print self.classification.classify(self.getCurrentData(time))
@@ -333,7 +355,7 @@ class Game():
                             self.currentTable = self.recievedOrder
                             self.hint = self.font.render("Idz do stolika nr " + str(self.currentTable) + ".", True, (255,255,255))
                         else:
-                            self.currentTable = self.getDecision()  # if you have no target, choose one
+                            self.currentTable = self.getDecision(time)  # if you have no target, choose one
                             if (self.currentTable > 0):  # 0 if everyone is waiting for a meal and meal isn't ready
                                 kitchenLog = self.checkOrder(self.currentTable,time)  # maybe there's something to bring
                                 if (kitchenLog != None):  # if so, go to the kitchen
@@ -358,6 +380,7 @@ class Game():
                                 if (self.colors.getServed() == len(self.customers)):  # whoa, mission accomplished
                                     message = "Wszyscy klienci obsluzeni!"
                                     self.hintDisplay = False
+                                    self.quitTime = time + 5
                                 self.hint = self.font.render("Nacisnij spacje, aby otrzymac wskazowke.", True, (255,255,255))
                                 self.message = self.font.render(message, True, (255,255,255))
                                 self.recievedOrder = 0

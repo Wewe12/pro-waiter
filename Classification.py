@@ -49,16 +49,12 @@ class Classification:
     def classify(self, customers):
         # creating test data
             
-        #obliczanie odleglosci dla kazdego smiecia, rozmywanie danych informacji
-        #tworzenie slownika danych
         table = []
         for i in range(len(customers)):
             collection = {}
             collection['Waiting'] = fuzzifyWaiting(customers[i][0])
             collection['Meal'] = fuzzifyMeal(customers[i][1])
             collection['Distance'] = fuzzifyDistance(customers[i][2])
-            #collection['Points']=str(trashlist[i][2])
-            #collection['Equipment'] = fuzzifyEquipment(game.player.capacity, game.player.sumEquipment())
             table.append(collection)
 
         # classyfing test data

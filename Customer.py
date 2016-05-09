@@ -15,6 +15,7 @@ class Customer():
         self.state = 0  # initial state
         self.tilesdown = tilesdown  # tiles above the table on which waiter is able to serve
         self.tilesup = tilesup  # tiles below the table on which waiter is able to serve
+        self.doubleActionEnabled = False  # true if waiter is bringing both drink and meal
 
 
     # checking if waiter is standing on the right tile
@@ -29,13 +30,22 @@ class Customer():
         else:
             return False
 
+    # allowing moving from state 1 to 3 directly (waiter is bringing both drink and meal)
+    def enableDoubleAction(self):
+        self.doubleActionEnabled = True
+
     # checking which action is possible and calling proper function 
     def customerAction(self, time, kitchen, player, colors):
         if (self.actionPossible(player) and self.state < 3):
             if (self.state == 0):
                 return self.createOrder(time, kitchen, colors)
             elif (self.state == 1):
-                return self.serveDrink(kitchen, colors)
+                if (self.doubleActionEnabled):
+                    self.serveDrink(kitchen,colors)
+                    self.doubleActionEnabled = False
+                    return self.serveMeal(time, kitchen, colors)
+                else:
+                    return self.serveDrink(kitchen, colors)
             elif (self.state == 2):
                 return self.serveMeal(time, kitchen, colors)
         else:
