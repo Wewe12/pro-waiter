@@ -59,7 +59,7 @@ def main():
         clock = pygame.time.Clock()
         frame_rate = 60
         frame_count = 0
-        time0 = time.time()
+
         # let the game begin
 
         game = Game.Game(map1,player)
@@ -71,8 +71,7 @@ def main():
                 # time counting
 
                 # calculate total seconds
-                
-                total_seconds = round(time.time() - time0, 1)
+                total_seconds = frame_count // frame_rate
 
                 # update the screen
                 game.display(total_seconds)
