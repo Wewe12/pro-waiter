@@ -11,6 +11,7 @@ import Number
 import Colors
 import Distance
 import Classification
+import MachineLearning
 
 class Game():
 
@@ -137,6 +138,13 @@ class Game():
         # display the game window
         self.DISPLAYSURF = pygame.display.set_mode((tilemap.mapwidth*tilemap.tilesize + 450,tilemap.mapheight*tilemap.tilesize))
 
+        # machine learning constructor
+        ## as argument get trainig set generate from FCL
+        self.machineLearning = MachineLearning.MachineLearning("machinelearning_trainingset.csv")
+
+        #learn model using trening set
+        self.machineLearning.learn()
+
     
     # function that supports collision preventing
     # takes into consideration object's size
@@ -162,7 +170,8 @@ class Game():
     def getDecision(self,time):
         data = self.getCurrentData(time)
         decisions = self.classification.classify(data)  # decisions made by the tree
-        # print decisions
+        print "data: "
+        print data
         permissible = []
         for i in range(len(data)):
             if (data[i] == 'True'):
@@ -178,12 +187,23 @@ class Game():
             return 0
         # go to the nearest permissible table
         else:
-            mindist = 51
-            for element in permissible:
-                dist = data[element][2]
-                if (dist < mindist):
-                    mindist = dist
-                    choice = element
+
+            ## machine learning version
+            learningData = [data[element] for element in permissible]
+            result = self.machineLearning.getPrediction(learningData)
+            indexOfChoice =  result.index(min(result));
+            choice = permissible[indexOfChoice]
+            ## end 
+
+            #distance version
+            # mindist = 51
+            # for element in permissible:
+            #     dist = data[element][2]
+            #     if (dist < mindist):
+            #         mindist = dist
+            #         choice = element
+            #end
+
             return choice + 1
             
             

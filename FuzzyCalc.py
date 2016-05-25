@@ -4,8 +4,9 @@ import fuzzy.storage.fcl.Reader
 
 class FuzzyCalc:
 
-    system = fuzzy.storage.fcl.Reader.Reader().load_from_file("./fuzzycalc.fcl")
- 
+     
+    system = fuzzy.storage.fcl.Reader.Reader().load_from_file('fuzzycalc.fcl')
+    
     # preallocate input and output values
     my_input = {
         "waitinge" : 0.0,
@@ -24,6 +25,10 @@ class FuzzyCalc:
     
     # calculate
     system.calculate(my_input, my_output)
+
+    with open("machinelearning_trainingset.csv", "a") as myfile:
+        myfile.write(str(my_input["waiting"]) + ";" +  str(my_input["meal"]) + ";" + str(my_input["distance"]) + ";" + str (my_output["service"]) + "\n" )
+
  
     # now use outputs
-    print "\n obsługa : " + str( my_output["service"])
+    print "\n obsluga : " + str( my_output["service"])
