@@ -34,6 +34,10 @@ class AStar(object):
         self.grid_height = None
         self.grid_width = None
 
+    def changeCoordinates(self, start, end):
+        self.start = self.get_cell(*start)
+        self.end = self.get_cell(*end)
+
     def init_grid(self, width, height, walls, start, end):
         """Prepare grid cells, walls.
 
@@ -115,11 +119,19 @@ class AStar(object):
         adj.f = adj.h + adj.g
 
     def solve(self):
+
         """Solve maze, find path to ending cell.
 
         @returns path or None if not found.
         """
         # add starting cell to open heap queue
+        self.opened = []
+        heapq.heapify(self.opened)
+        # visited cells list
+        self.closed = set()
+        # grid cells
+        # self.cells = []
+
         heapq.heappush(self.opened, (self.start.f, self.start))
         while len(self.opened):
             # pop cell from heap queue
