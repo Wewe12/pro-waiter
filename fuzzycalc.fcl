@@ -1,0 +1,56 @@
+FUNCTION_BLOCK service
+
+VAR_INPUT				
+	waiting : REAL;
+	meal : REAL;
+	distance : REAL;
+END_VAR
+
+VAR_OUTPUT				
+	service : REAL;
+END_VAR
+
+FUZZIFY waiting			
+	TERM short := (0,0) (8,1) (10,1) (12,0) ; 
+	TERM medium := (10,0) (16,1) (28,1) (32,0);
+	TERM long := (28,0) (31,1) (42,1) (45,0);
+END_FUZZIFY
+
+FUZZIFY meal			
+	TERM absent := (0,0) (1,1) (2,1) (3,0) ;
+	TERM hot := (2,0) (7,1) (18,1) (20,0);
+	TERM warm := (18,0) (19,1) (28,1) (30,0);
+END_FUZZIFY
+
+FUZZIFY distance			
+	TERM close := (0,0) (3,1) (12,1) (14,0) ;
+	TERM medium := (12,0) (15,1) (27,1) (30,0);
+	TERM far := (27,0) (29,1) (47,1) (51,0);
+END_FUZZIFY
+
+DEFUZZIFY service			
+	TERM now := (0,0) (0.5,1) (2,1) (4,0);
+	TERM soon := (2,0) (4,1) (6,1) (8,0);
+	TERM later := (6,0) (8,1) (9.5,1) (10,0);
+	ACCU: MAX;
+	METHOD : COG;				
+END_DEFUZZIFY
+
+RULEBLOCK No1
+	AND : MIN;			
+	ACT : MIN;
+	(*ACCU:MAX;*)		
+	RULE 1 : IF meal IS warm THEN service IS now;
+	RULE 2 : IF meal IS hot AND distance IS medium THEN service IS soon;
+	RULE 3 : IF meal IS hot AND distance IS close THEN service IS soon;
+	RULE 4 : IF meal IS hot AND distance IS far THEN service IS later;
+	RULE 5 : IF meal IS absent AND waiting IS medium THEN service IS soon;
+	RULE 6 : IF meal IS absent AND distance IS far THEN service IS later;
+	RULE 7 : IF waiting IS short AND meal IS absent AND distance IS close THEN service IS later;
+	RULE 8 : IF waiting IS medium AND meal IS absent AND distance IS close THEN service IS soon;
+	RULE 9 : IF waiting IS long THEN service IS now;
+
+END_RULEBLOCK
+
+END_FUNCTION_BLOCK
+
