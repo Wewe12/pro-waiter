@@ -367,7 +367,8 @@ class Game():
     # event handling
 
     def handle_events(self,time):
-        for event in pygame.event.get():
+        events = pygame.event.get()
+        for event in events:
             # game aborting
             if event.type == QUIT:
                 exit()
@@ -385,9 +386,38 @@ class Game():
                     self.player.move('right')
                 if event.key == K_LEFT:
                     self.player.move('left')
-                if event.key == K_i:
+                if event.key == K_1:
                     print self.player.getCoordinates()
-                    self.algorithm.changeCoordinates(self.player.getCoordinates(), (2, 4))
+                    self.algorithm.changeCoordinates(self.player.getCoordinates(), (4,4))
+                    self.player.moveAlgorithm(self.algorithm.solve())
+                if event.key == K_3:
+                    self.algorithm.changeCoordinates(self.player.getCoordinates(), (4,10))
+                    self.player.moveAlgorithm(self.algorithm.solve())
+                if event.key == K_2:
+                    self.algorithm.changeCoordinates(self.player.getCoordinates(), (13,4))
+                    self.player.moveAlgorithm(self.algorithm.solve())
+                if event.key == K_4:
+                    self.algorithm.changeCoordinates(self.player.getCoordinates(), (13,10))
+                    self.player.moveAlgorithm(self.algorithm.solve())
+                if event.key == K_5:
+                    self.algorithm.changeCoordinates(self.player.getCoordinates(), (23,4))
+                    self.player.moveAlgorithm(self.algorithm.solve())
+                if event.key == K_7:
+                    self.algorithm.changeCoordinates(self.player.getCoordinates(), (23,10))
+                    self.player.moveAlgorithm(self.algorithm.solve())
+                if event.key == K_6:
+                    self.algorithm.changeCoordinates(self.player.getCoordinates(), (30,4))
+                    self.player.moveAlgorithm(self.algorithm.solve())
+                if event.key == K_8:
+                    self.algorithm.changeCoordinates(self.player.getCoordinates(), (30,10))
+                    self.player.moveAlgorithm(self.algorithm.solve())
+                if event.key == K_k:
+                    self.algorithm.changeCoordinates(self.player.getCoordinates(), (16,3))
+                    self.player.moveAlgorithm(self.algorithm.solve())
+                if event.key == K_i:
+                    xdestination = raw_input("Podaj miejsce do ktorego ma dojsc kelner:")
+                    ydestination = raw_input("Podaj miejsce do ktorego ma dojsc kelner:")
+                    self.algorithm.changeCoordinates(self.player.getCoordinates(), (int(xdestination), int(ydestination)))
                     self.player.moveAlgorithm(self.algorithm.solve())
                 # if event.key == K_KP_ENTER:
                     # klawisz do testowania rzeczy

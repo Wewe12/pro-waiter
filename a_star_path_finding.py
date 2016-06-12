@@ -141,7 +141,11 @@ class AStar(object):
             self.closed.add(cell)
             # if ending cell, return found path
             if cell is self.end:
-                return self.get_path()
+                if cell is self.start:
+                    cell.parent = None
+                    return self.get_path()
+                else:
+                    return self.get_path()
             # get adjacent cells for cell
             adj_cells = self.get_adjacent_cells(cell)
             for adj_cell in adj_cells:
