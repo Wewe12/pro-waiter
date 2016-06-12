@@ -142,7 +142,7 @@ class Game():
         # initial text
         self.message = self.font.render("Klienci czekaja na obsluge.", True, (255,255,255))
         self.hint = self.font.render("Nacisnij spacje, aby otrzymac wskazowke.", True, (255,255,255))
-        self.hintNeural = self.font.render("Nacisnij shift, aby otrzymac wskazowke (siec neuronowa).", True, (255,255,255))
+        self.hintNeural = self.font.render("Prawy shift - wskazowka sieci neuronowej.", True, (255,255,255))
         
         # time when program will be closed automatically
         self.quitTime = -1
@@ -241,8 +241,6 @@ class Game():
         for elem in data:
             solved = self.neural.solve(elem)
             result.append(solved)
-            print "Solved data point: "
-            print str(solved)
         index = 0
         for i in range(len(result)):
             if result[i] < result[index]:
@@ -254,8 +252,6 @@ class Game():
         arr = []
         for elem in data:
             arr.append(list(elem))
-        print "Array after conversion: "
-        print arr
         return arr    
         
     # checking if there's something for chosen customer in the kitchen
