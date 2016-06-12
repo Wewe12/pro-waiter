@@ -13,6 +13,8 @@ import Distance
 import Classification
 import MachineLearning
 import a_star_path_finding
+import Neural
+
 
 
 class Game():
@@ -26,7 +28,9 @@ class Game():
         self.tableList = [] # list of tables
         self.numberList = [] # list of table numbers
         self.objectList = [] # list of objects other than tables
-
+        
+        self.neural = Neural.Neural() # neural network for choosing destination
+       
         # declaration of tables and other objects
 
         # tables
@@ -138,12 +142,16 @@ class Game():
         # initial text
         self.message = self.font.render("Klienci czekaja na obsluge.", True, (255,255,255))
         self.hint = self.font.render("Nacisnij spacje, aby otrzymac wskazowke.", True, (255,255,255))
+        self.hintNeural = self.font.render("Nacisnij shift, aby otrzymac wskazowke (siec neuronowa).", True, (255,255,255))
         
         # time when program will be closed automatically
         self.quitTime = -1
 
         # hints for user enable
         self.hintDisplay = True
+
+        # neural hints for user enable
+        self.neuralHintDisplay = True
 
         # distance controller
         self.distance = Distance.Distance(self.player)
@@ -225,13 +233,34 @@ class Game():
             #         mindist = dist
             #         choice = element
             #end
-
             return choice + 1
-            
-            
+    # neural version
+    def getNeuralDecision(self, time):
+        data = self.timeToDataArray(time)
+        result = [] 
+        for elem in data:
+            solved = self.neural.solve(elem)
+            result.append(solved)
+            print "Solved data point: "
+            print str(solved)
+        index = 0
+        for i in range(len(result)):
+            if result[i] < result[index]:
+                index = i
+        return index + 1
+        
+    def timeToDataArray(self, time):
+        data = self.getCurrentData(time)
+        arr = []
+        for elem in data:
+            arr.append(list(elem))
+        print "Array after conversion: "
+        print arr
+        return arr    
+        
     # checking if there's something for chosen customer in the kitchen
     # saving it as a recievedOrder if so
-    def checkOrder(self,currentTable,time):
+    def checkOrder(self,currentTable,time,aitype):
         state = self.customers[currentTable - 1].getState()
         if (state == 1 or state == 2):
             if (self.kitchen.getMealsReadiness(time)[currentTable - 1] > 0):
@@ -247,7 +276,10 @@ class Game():
                 self.customers[currentTable - 1].enableDoubleAction()
             else:
                 kitchenLog = "Zabrano napoj dla klienta " + str(currentTable) + "."
-            self.hint = self.font.render("Idz do kuchni.",True,(255,255,255))
+            if (aitype == "tree"):
+                self.hint = self.font.render("Idz do kuchni.",True,(255,255,255))
+            else:
+                self.hintNeural = self.font.render("Idz do kuchni.",True,(255,255,255))
             self.recievedOrder = currentTable
             return kitchenLog
 
@@ -379,6 +411,10 @@ class Game():
         if (self.hintDisplay):
             self.DISPLAYSURF.blit(self.hint, [790,100])
 
+        # shows neural hints for user if enabled
+        if (self.neuralHintDisplay):
+            self.DISPLAYSURF.blit(self.hintNeural, [790,150])    
+            
         # updates the game window
         pygame.display.update()            
 
@@ -424,6 +460,23 @@ class Game():
                     self.goToKitchen(time)
                 # if event.key == K_KP_ENTER:
                     # klawisz do testowania rzeczy
+                if event.key == K_RSHIFT:
+                    if (self.kitchenOpen == False):  # if the kitchen is open, go to the damn kitchen
+                        if (self.recievedOrder > 0):  # if you took something from the kitchen, you already have a target
+                            self.currentTable = self.recievedOrder
+                            self.hintNeural = self.font.render("Idz do stolika nr " + str(self.currentTable) + ".", True, (255,255,255))
+                        else:
+                            self.currentTable = self.getNeuralDecision(time)  # if you have no target, choose one
+                            if (self.currentTable > 0):  # 0 if everyone is waiting for a meal and meal isn't ready
+                                kitchenLog = self.checkOrder(self.currentTable,time,"neural")  # maybe there's something to bring
+                                if (kitchenLog != None):  # if so, go to the kitchen
+                                    self.kitchenOpen = True
+                                    self.kitchenLog = kitchenLog
+                                else:  # if not, just go get the order placed
+                                    self.hintNeural = self.font.render("Idz do stolika nr " + str(self.currentTable) + ".", True, (255,255,255))
+                            else:  # nowhere to go
+                                self.hintNeural = self.font.render("Poczekaj na przygotowanie posilku.", True, (255,255,255))
+                                
                 if event.key == K_KP1:
                     print self.classification.classify(self.getCurrentData(time))
                 # generating hints for player (where to go)
@@ -435,7 +488,7 @@ class Game():
                         else:
                             self.currentTable = self.getDecision(time)  # if you have no target, choose one
                             if (self.currentTable > 0):  # 0 if everyone is waiting for a meal and meal isn't ready
-                                kitchenLog = self.checkOrder(self.currentTable,time)  # maybe there's something to bring
+                                kitchenLog = self.checkOrder(self.currentTable,time,"tree")  # maybe there's something to bring
                                 if (kitchenLog != None):  # if so, go to the kitchen
                                     self.kitchenOpen = True
                                     self.kitchenLog = kitchenLog
