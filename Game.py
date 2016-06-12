@@ -509,5 +509,6 @@ class Game():
                                     self.hintDisplay = False
                                     self.quitTime = time + 5
                                 self.hint = self.font.render("Nacisnij spacje, aby otrzymac wskazowke.", True, (255,255,255))
+                                self.hintNeural = self.font.render("Prawy shift - wskazowka sieci neuronowej.", True, (255,255,255))
                                 self.message = self.font.render(message, True, (255,255,255))
                                 self.recievedOrder = 0
