@@ -500,6 +500,7 @@ class Game():
                                 message = self.kitchenLog
                                 self.message = self.font.render(message,True,(255,255,255))
                                 self.hint = self.font.render("Nacisnij spacje, aby otrzymac wskazowke.",True,(255,255,255))
+                                self.hintNeural = self.font.render("Prawy shift - wskazowka sieci neuronowej.",True,(255,255,255))
                                 self.kitchenOpen = False
                         else:  # interactions with customers
                             message = self.customers[self.currentTable - 1].customerAction(time, self.kitchen, self.player, self.colors)
