@@ -1,5 +1,6 @@
 import random
 from random import shuffle
+import time
 
 import Tilemap
 import Sprite
@@ -21,10 +22,17 @@ class Player(Sprite.Sprite):
         return (self.x, self.y)
 
     def moveAlgorithm(self, directions):
-        if directions != None:
-            print directions
-            for direction in directions:
-                self.setCoordinates(direction[0], direction[1])
+        path = []
+        for i in range(len(directions) - 1):
+            if directions[i][0] < directions[i + 1][0]:
+                path.append('right')
+            elif directions[i][0] > directions[i + 1][0]:
+                path.append('left')
+            elif directions[i][1] < directions[i + 1][1]:
+                path.append('down')
+            elif directions[i][1] > directions[i + 1][1]:
+                path.append('up')
+        return path
 
     def setCoordinates(self, x, y):
         self.x = x

@@ -297,6 +297,24 @@ class Game():
                 data.append((0,0,51))
         return data
 
+    def go(self,time, coords):
+        self.algorithm.changeCoordinates(self.player.getCoordinates(), (coords))
+        dirs = self.algorithm.solve()
+        path = self.player.moveAlgorithm(dirs)
+        path.append('down')
+        for j in range(len(path)):
+            self.player.move(path[j])
+            self.display(time)
+
+    def goToKitchen(self,time):
+        self.algorithm.changeCoordinates(self.player.getCoordinates(), (16,3))
+        dirs = self.algorithm.solve()
+        path = self.player.moveAlgorithm(dirs)
+        path.append('up')
+        for j in range(len(path)):
+            self.player.move(path[j])
+            self.display(time)
+
     # shows and updates game window
  
     def display(self, time):
@@ -387,38 +405,23 @@ class Game():
                 if event.key == K_LEFT:
                     self.player.move('left')
                 if event.key == K_1:
-                    print self.player.getCoordinates()
-                    self.algorithm.changeCoordinates(self.player.getCoordinates(), (4,4))
-                    self.player.moveAlgorithm(self.algorithm.solve())
-                if event.key == K_3:
-                    self.algorithm.changeCoordinates(self.player.getCoordinates(), (4,10))
-                    self.player.moveAlgorithm(self.algorithm.solve())
+                    self.go(time, (4,4))
                 if event.key == K_2:
-                    self.algorithm.changeCoordinates(self.player.getCoordinates(), (13,4))
-                    self.player.moveAlgorithm(self.algorithm.solve())
+                    self.go(time, (13,4))
+                if event.key == K_3:
+                    self.go(time, (4,10))
                 if event.key == K_4:
-                    self.algorithm.changeCoordinates(self.player.getCoordinates(), (13,10))
-                    self.player.moveAlgorithm(self.algorithm.solve())
+                    self.go(time, (13,10))
                 if event.key == K_5:
-                    self.algorithm.changeCoordinates(self.player.getCoordinates(), (23,4))
-                    self.player.moveAlgorithm(self.algorithm.solve())
-                if event.key == K_7:
-                    self.algorithm.changeCoordinates(self.player.getCoordinates(), (23,10))
-                    self.player.moveAlgorithm(self.algorithm.solve())
+                    self.go(time, (23,4))
                 if event.key == K_6:
-                    self.algorithm.changeCoordinates(self.player.getCoordinates(), (30,4))
-                    self.player.moveAlgorithm(self.algorithm.solve())
+                    self.go(time, (30,4))
+                if event.key == K_7:
+                    self.go(time, (23,10))
                 if event.key == K_8:
-                    self.algorithm.changeCoordinates(self.player.getCoordinates(), (30,10))
-                    self.player.moveAlgorithm(self.algorithm.solve())
+                    self.go(time, (30,10))
                 if event.key == K_k:
-                    self.algorithm.changeCoordinates(self.player.getCoordinates(), (16,3))
-                    self.player.moveAlgorithm(self.algorithm.solve())
-                if event.key == K_i:
-                    xdestination = raw_input("Podaj miejsce do ktorego ma dojsc kelner:")
-                    ydestination = raw_input("Podaj miejsce do ktorego ma dojsc kelner:")
-                    self.algorithm.changeCoordinates(self.player.getCoordinates(), (int(xdestination), int(ydestination)))
-                    self.player.moveAlgorithm(self.algorithm.solve())
+                    self.goToKitchen(time)
                 # if event.key == K_KP_ENTER:
                     # klawisz do testowania rzeczy
                 if event.key == K_KP1:
@@ -444,7 +447,7 @@ class Game():
                 if event.key == K_RETURN:
                     if (self.currentTable != None):
                         if (self.kitchenOpen):  # no interactions with customers right now
-                            if ((self.player.x, self.player.y) == (16,3)):  # you must reach the kitchen door
+                            if ((self.player.x, self.player.y) == (16,3) and self.player.image == self.player.texture_up):  # you must reach the kitchen door
                                 message = self.kitchenLog
                                 self.message = self.font.render(message,True,(255,255,255))
                                 self.hint = self.font.render("Nacisnij spacje, aby otrzymac wskazowke.",True,(255,255,255))
