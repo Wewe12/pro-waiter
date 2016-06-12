@@ -506,6 +506,7 @@ class Game():
                             if (message != "action impossible"):
                                 if (self.colors.getServed() == len(self.customers)):  # whoa, mission accomplished
                                     message = "Wszyscy klienci obsluzeni!"
+                                    self.neuralHintDisplay = False
                                     self.hintDisplay = False
                                     self.quitTime = time + 5
                                 self.hint = self.font.render("Nacisnij spacje, aby otrzymac wskazowke.", True, (255,255,255))
