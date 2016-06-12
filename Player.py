@@ -33,10 +33,6 @@ class Player(Sprite.Sprite):
                 path.append('up')
         return path
 
-    def setCoordinates(self, x, y):
-        self.x = x
-        self.y = y
-
     # moving player function
 
     def move(self,direction):
