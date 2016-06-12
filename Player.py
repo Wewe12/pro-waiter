@@ -1,5 +1,6 @@
 import random
 from random import shuffle
+import time
 
 import Tilemap
 import Sprite
@@ -15,7 +16,27 @@ class Player(Sprite.Sprite):
         self.texture_left = texture_left
         self.texture_right = texture_right
         self.tilemap = tilemap
-    
+
+    def getCoordinates(self):
+        return (self.x, self.y)
+
+    def moveAlgorithm(self, directions):
+        path = []
+        for i in range(len(directions) - 1):
+            if directions[i][0] < directions[i + 1][0]:
+                path.append('right')
+            elif directions[i][0] > directions[i + 1][0]:
+                path.append('left')
+            elif directions[i][1] < directions[i + 1][1]:
+                path.append('down')
+            elif directions[i][1] > directions[i + 1][1]:
+                path.append('up')
+        return path
+
+    def setCoordinates(self, x, y):
+        self.x = x
+        self.y = y
+
     # moving player function
 
     def move(self,direction):

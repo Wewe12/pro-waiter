@@ -12,6 +12,8 @@ import Colors
 import Distance
 import Classification
 import MachineLearning
+import a_star_path_finding
+
 
 class Game():
 
@@ -68,6 +70,26 @@ class Game():
 
         self.objectList.append(Sprite.Sprite(15,2,'textures/door.png'))
 
+        self.list_of_walls = [(2, 5), (2, 6), (3, 5), (3, 6), (4, 5), (4, 6), (5, 5), (5, 6),
+                              (2, 11), (2, 12), (3, 11), (3, 12), (4, 11), (4, 12), (5, 11), (5, 12),
+                              (11, 5), (11, 6), (12, 5), (12, 6), (13, 5), (13, 6), (14, 5), (14, 6),
+                              (11, 11), (11, 12), (12, 11), (12, 12), (13, 11), (13, 12), (14, 11), (14, 12),
+                              (18, 5), (18, 8), (18, 11), (18, 14),
+                              (21, 5), (21, 6), (22, 5), (22, 6), (23, 5), (23, 6), (24, 5), (24, 6),
+                              (21, 11), (21, 12), (22, 11), (22, 12), (23, 11), (23, 12), (24, 11), (24, 12),
+                              (28, 5), (28, 6), (29, 5), (29, 6), (30, 5), (30, 6), (31, 5), (31, 6),
+                              (28, 11), (28, 12), (29, 11), (29, 12), (30, 11), (30, 12), (31, 11), (31, 12)]
+        for x in range(0,33,1):
+            self.list_of_walls.append((x, 0))
+            self.list_of_walls.append((x,1))
+            self.list_of_walls.append((x,2))
+            self.list_of_walls.append((x,18))
+        for y in range(3,17,1):
+            self.list_of_walls.append((0, x))
+            self.list_of_walls.append((33, x))
+        self.algorithm = a_star_path_finding.AStar()
+        self.algorithm.init_grid(33,18,self.list_of_walls,(0, 0), (0, 0))
+
         # declarations of customers and their table numbers;
         # up and down refers to tiles that waiter must stand od
         # to be able to serve a customer
@@ -100,7 +122,7 @@ class Game():
             self.preventCollisions(element,2,2)
 
         # other objects
-        
+                
         for element in self.objectList:
             if (element.image == 'textures/chairLt.png' or element.image == 'textures/chairRt.png'):
                 self.preventCollisions(element,1,2)
@@ -276,6 +298,24 @@ class Game():
                 data.append((0,0,51))
         return data
 
+    def go(self,time, coords):
+        self.algorithm.changeCoordinates(self.player.getCoordinates(), (coords))
+        dirs = self.algorithm.solve()
+        path = self.player.moveAlgorithm(dirs)
+        path.append('down')
+        for j in range(len(path)):
+            self.player.move(path[j])
+            self.display(time)
+
+    def goToKitchen(self,time):
+        self.algorithm.changeCoordinates(self.player.getCoordinates(), (16,3))
+        dirs = self.algorithm.solve()
+        path = self.player.moveAlgorithm(dirs)
+        path.append('up')
+        for j in range(len(path)):
+            self.player.move(path[j])
+            self.display(time)
+
     # shows and updates game window
  
     def display(self, time):
@@ -364,6 +404,24 @@ class Game():
                     self.player.move('right')
                 if event.key == K_LEFT:
                     self.player.move('left')
+                if event.key == K_1:
+                    self.go(time, (4,4))
+                if event.key == K_2:
+                    self.go(time, (13,4))
+                if event.key == K_3:
+                    self.go(time, (4,10))
+                if event.key == K_4:
+                    self.go(time, (13,10))
+                if event.key == K_5:
+                    self.go(time, (23,4))
+                if event.key == K_6:
+                    self.go(time, (30,4))
+                if event.key == K_7:
+                    self.go(time, (23,10))
+                if event.key == K_8:
+                    self.go(time, (30,10))
+                if event.key == K_k:
+                    self.goToKitchen(time)
                 # if event.key == K_KP_ENTER:
                     # klawisz do testowania rzeczy
                 if event.key == K_KP1:
@@ -389,7 +447,7 @@ class Game():
                 if event.key == K_RETURN:
                     if (self.currentTable != None):
                         if (self.kitchenOpen):  # no interactions with customers right now
-                            if ((self.player.x, self.player.y) == (16,3)):  # you must reach the kitchen door
+                            if ((self.player.x, self.player.y) == (16,3) and self.player.image == self.player.texture_up):  # you must reach the kitchen door
                                 message = self.kitchenLog
                                 self.message = self.font.render(message,True,(255,255,255))
                                 self.hint = self.font.render("Nacisnij spacje, aby otrzymac wskazowke.",True,(255,255,255))
