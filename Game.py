@@ -204,7 +204,7 @@ class Game():
         print data
         permissible = []
         for i in range(len(data)):
-            if (data[i] == 'True'):
+            if (decisions[i] == 'True'):
                 permissible.append(i)
         # if tree hasn't classified any table, allow each customer
         # except whose order is already placed, drink served (if
