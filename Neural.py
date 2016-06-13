@@ -15,7 +15,7 @@ def normalize(array):
             array[i] = float(array[i])/30    
         if (i == 2):
             array[i] = float(array[i])/51
-        array[i] = np.around(array[i], 5)
+        array[i] = np.around(array[i], 3)
     return array
     
 class Neural:
@@ -24,7 +24,7 @@ class Neural:
         self.syn0 = 0
         self.syn1 = 0
         #czytanie zbioru treningowego
-        file = "machinelearning_trainingset.csv"
+        file = "neural.csv"
         lines = open(file,"r").readlines()
         y = []
         x = []
@@ -44,9 +44,9 @@ class Neural:
                     elem[i] = elem[i]/30    
                 if (i == 2):
                     elem[i] = elem[i]/51
-                elem[i] = np.around(elem[i], 5)
+                elem[i] = np.around(elem[i], 3)
         for elem in y:
-            elem[0] = np.around(elem[0]/10, 5)
+            elem[0] = np.around(elem[0]/10, 3)
         x = np.array(x)
         y = np.array(y)
         
@@ -91,5 +91,6 @@ class Neural:
         array = normalize(array)
         l1 = nonlin(np.dot(array,self.syn0))
         result = nonlin(np.dot(l1,self.syn1))
+        print "result: "
+        print str(result)
         return result
-        

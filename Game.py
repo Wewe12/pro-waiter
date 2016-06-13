@@ -242,10 +242,15 @@ class Game():
             solved = self.neural.solve(elem)
             result.append(solved)
         index = 0
+        flag = True
         for i in range(len(result)):
-            if result[i] < result[index]:
+            if result[i] >= result[index]:
                 index = i
-        return index + 1
+                flag = False
+        if (flag):
+            return -1
+        else:
+            return index + 1
         
     def timeToDataArray(self, time):
         data = self.getCurrentData(time)
