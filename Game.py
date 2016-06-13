@@ -200,7 +200,9 @@ class Game():
     def getDecision(self,time):
         data = self.getCurrentData(time)
         decisions = self.classification.classify(data)  # decisions made by the tree
-        print "data: "
+        print "\n\ndecisions: "
+        print decisions
+        print "\ndata: "
         print data
         permissible = []
         for i in range(len(data)):
@@ -217,14 +219,12 @@ class Game():
             return 0
         # go to the nearest permissible table
         else:
-
             ## machine learning version
             learningData = [data[element] for element in permissible]
             result = self.machineLearning.getPrediction(learningData)
             indexOfChoice =  result.index(min(result));
             choice = permissible[indexOfChoice]
             ## end 
-
             #distance version
             # mindist = 51
             # for element in permissible:

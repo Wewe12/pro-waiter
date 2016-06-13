@@ -30,7 +30,7 @@ class MachineLearning:
 	def getPrediction(self, data):
 		# data = [[14,16,44], [22,22,3],[16,0,3]]
 		prediction = self.regression.predict(np.array(data, float))
-		print "PredicitonL "
+		print "\nPrediciton: "
 		print prediction
 		return np.array(prediction).tolist()
 		# return prediction[0]
