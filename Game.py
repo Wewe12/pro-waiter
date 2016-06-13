@@ -14,6 +14,7 @@ import Classification
 import MachineLearning
 import a_star_path_finding
 import Neural
+import numpy
 
 
 
@@ -242,15 +243,12 @@ class Game():
             solved = self.neural.solve(elem)
             result.append(solved)
         index = 0
-        flag = True
         for i in range(len(result)):
-            if result[i] >= result[index]:
+            if result[i] > result[index]:
                 index = i
-                flag = False
-        if (flag):
+        if (numpy.abs((numpy.mean(result) - result[4])) < 0.00001):
             return -1
-        else:
-            return index + 1
+        return index + 1
         
     def timeToDataArray(self, time):
         data = self.getCurrentData(time)
@@ -468,14 +466,17 @@ class Game():
                             self.hintNeural = self.font.render("Idz do stolika nr " + str(self.currentTable) + ".", True, (255,255,255))
                         else:
                             self.currentTable = self.getNeuralDecision(time)  # if you have no target, choose one
-                            if (self.currentTable > 0):  # 0 if everyone is waiting for a meal and meal isn't ready
-                                kitchenLog = self.checkOrder(self.currentTable,time,"neural")  # maybe there's something to bring
-                                if (kitchenLog != None):  # if so, go to the kitchen
-                                    self.kitchenOpen = True
-                                    self.kitchenLog = kitchenLog
-                                else:  # if not, just go get the order placed
-                                    self.hintNeural = self.font.render("Idz do stolika nr " + str(self.currentTable) + ".", True, (255,255,255))
-                            else:  # nowhere to go
+                            if (self.currentTable != -1):
+                                if (self.currentTable > 0):  # 0 if everyone is waiting for a meal and meal isn't ready
+                                    kitchenLog = self.checkOrder(self.currentTable,time,"neural")  # maybe there's something to bring
+                                    if (kitchenLog != None):  # if so, go to the kitchen
+                                        self.kitchenOpen = True
+                                        self.kitchenLog = kitchenLog
+                                    else:  # if not, just go get the order placed
+                                        self.hintNeural = self.font.render("Idz do stolika nr " + str(self.currentTable) + ".", True, (255,255,255))
+                                else:  # nowhere to go
+                                    self.hintNeural = self.font.render("Poczekaj na przygotowanie posilku.", True, (255,255,255))
+                            else:
                                 self.hintNeural = self.font.render("Poczekaj na przygotowanie posilku.", True, (255,255,255))
                                 
                 if event.key == K_KP1:

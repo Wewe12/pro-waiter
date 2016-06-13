@@ -91,6 +91,6 @@ class Neural:
         array = normalize(array)
         l1 = nonlin(np.dot(array,self.syn0))
         result = nonlin(np.dot(l1,self.syn1))
-        print "result: "
-        print str(result)
+        # print "result: "
+        # print str(result)
         return result
